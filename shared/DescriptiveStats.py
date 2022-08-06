@@ -1,9 +1,18 @@
-class DescriptiveStats:
-    def __init__(self, mean, median, mode, range_stat, interquartile_range, standard_deviation, variance):
-        self.mean = mean
-        self.median = median
-        self.mode = mode
-        self.range_stat = range_stat
-        self.interquartile_range = interquartile_range
-        self.standard_deviation = standard_deviation
-        self.variance = variance
+import numpy as np
+
+
+def create_stats(column_name, column):
+    column_range = column.max() - column.min()
+    q3, q2 = np.percentile(column, [75, 25])
+    column_iqr = q3 - q2
+    return {
+        column_name: {
+            'mean': column.mean(),
+            'median': column.median(),
+            'mode': column.mode(),
+            'range': column_range,
+            'IQR': column_iqr,
+            'std': np.std(column),
+            'var': np.var(column)
+        }
+    }
